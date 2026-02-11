@@ -23,25 +23,25 @@ body{font-family:Arial,sans-serif;background:#0f0f1a;color:#fff;min-height:100vh
 .btn-row .btn{margin-top:0}
 .btn-secondary{background:#333;color:#ccc}
 .btn-secondary:hover{background:#444}
-.receipt-panel{flex:1;min-width:340px;display:flex;justify-content:center;position:sticky;top:30px}
-.receipt-outer{background:#f5f0e8;padding:18px 14px 28px;width:300px;box-shadow:0 4px 20px rgba(0,0,0,0.6);font-family:'Courier New',Courier,monospace;color:#333;font-size:12px;line-height:1.4;position:relative}
-.receipt-outer::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.015) 1px,rgba(0,0,0,0.015) 2px);pointer-events:none}
-.receipt-outer::after{content:'';position:absolute;bottom:-10px;left:0;right:0;height:10px;background:linear-gradient(135deg,#f5f0e8 33.33%,transparent 33.33%),linear-gradient(-135deg,#f5f0e8 33.33%,transparent 33.33%);background-size:12px 10px}
-.rc{text-align:center;margin-bottom:0}
-.rl{text-align:left;white-space:pre;font-size:12px}
-.amt-row{display:flex;justify-content:space-between;font-size:12px;margin:2px 0}
-.approved{text-align:center;font-weight:bold;font-size:13px;margin:6px 0}
-.cc{text-align:center;font-size:11px;margin-top:8px}
-.blank{height:4px}
+.receipt-panel{flex:1;min-width:280px;display:flex;justify-content:center;position:sticky;top:30px}
+.receipt-outer{background:#f5f0e8;padding:12px 10px 24px;width:216px;box-shadow:0 4px 20px rgba(0,0,0,0.6);font-family:'Courier New',Courier,monospace;color:#333;font-size:10px;line-height:1.3;position:relative}
+.receipt-outer::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.02) 1px,rgba(0,0,0,0.02) 2px);pointer-events:none}
+.receipt-outer::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:8px;background:linear-gradient(135deg,#f5f0e8 33.33%,transparent 33.33%),linear-gradient(-135deg,#f5f0e8 33.33%,transparent 33.33%);background-size:10px 8px}
+.rc{text-align:center;margin-bottom:0;font-size:10px}
+.rl{text-align:left;white-space:pre;font-size:10px}
+.amt-row{display:flex;justify-content:space-between;font-size:10px;margin:2px 0}
+.approved{text-align:center;font-weight:bold;font-size:11px;margin:4px 0}
+.cc{text-align:center;font-size:9px;margin-top:6px}
+.blank{height:3px}
 #receiptBox{display:none}
-@media print{body{background:#fff}.form-panel,.btn-row{display:none}.receipt-panel{position:static}.receipt-outer{box-shadow:none;width:280px}}
+@media print{body{background:#fff}.form-panel,.btn-row{display:none}.receipt-panel{position:static}.receipt-outer{box-shadow:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="form-panel">
 <h1>Payment Terminal Receipt</h1>
-<p class="sub">Generate realistic payment terminal receipts</p>
+<p class="sub">Generate realistic 57mm thermal receipts</p>
 <div class="row">
 <div class="fg"><label>Date (DDMMYYYY)</label><input id="f_date" value="28012026"></div>
 <div class="fg"><label>Time (HHMMSS)</label><input id="f_time" value="113550"></div>
