@@ -23,16 +23,14 @@ body{font-family:Arial,sans-serif;background:#0f0f1a;color:#fff;min-height:100vh
 .btn-row .btn{margin-top:0}
 .btn-secondary{background:#333;color:#ccc}
 .btn-secondary:hover{background:#444}
-.receipt-panel{flex:1;min-width:280px;display:flex;justify-content:center;position:sticky;top:30px}
-.receipt-outer{background:#f5f0e8;padding:12px 10px 24px;width:216px;box-shadow:0 4px 20px rgba(0,0,0,0.6);font-family:'Courier New',Courier,monospace;color:#333;font-size:10px;line-height:1.3;position:relative}
-.receipt-outer::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.02) 1px,rgba(0,0,0,0.02) 2px);pointer-events:none}
-.receipt-outer::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:8px;background:linear-gradient(135deg,#f5f0e8 33.33%,transparent 33.33%),linear-gradient(-135deg,#f5f0e8 33.33%,transparent 33.33%);background-size:10px 8px}
-.rc{text-align:center;margin-bottom:0;font-size:10px}
-.rl{text-align:left;white-space:pre;font-size:10px}
-.amt-row{display:flex;justify-content:space-between;font-size:10px;margin:2px 0}
-.approved{text-align:center;font-weight:bold;font-size:11px;margin:4px 0}
-.cc{text-align:center;font-size:9px;margin-top:6px}
-.blank{height:3px}
+.receipt-panel{flex:1;min-width:260px;display:flex;justify-content:center;position:sticky;top:30px}
+.receipt-outer{background:#fff;padding:8px 6px 12px;width:220px;box-shadow:0 2px 10px rgba(0,0,0,0.3);font-family:'Courier New',Courier,monospace;color:#000;font-size:11px;line-height:1.25}
+.rc{text-align:center}
+.rl{text-align:left}
+.amt-row{display:flex;justify-content:space-between}
+.approved{text-align:center;font-weight:bold}
+.cc{text-align:center;font-size:10px;margin-top:8px}
+.blank{height:11px}
 #receiptBox{display:none}
 @media print{body{background:#fff}.form-panel,.btn-row{display:none}.receipt-panel{position:static}.receipt-outer{box-shadow:none}}
 </style>
@@ -76,12 +74,11 @@ body{font-family:Arial,sans-serif;background:#0f0f1a;color:#fff;min-height:100vh
 <div class="fg"><label>Auth Code</label><input id="f_auth" value="NMQKQK"></div>
 </div>
 <div class="row">
-<div class="fg"><label>Currency</label><select id="f_currency"><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="USD">USD</option></select></div>
 <div class="fg"><label>Total Amount</label><input id="f_amount" value="150.00"></div>
 </div>
 <div class="row">
-<div class="fg"><label>Status</label><select id="f_status"><option>Approved</option><option>Declined</option><option>Cancelled</option></select></div>
-<div class="fg"><label>Copy Type</label><select id="f_copy"><option>CUSTOMER COPY</option><option>MERCHANT COPY</option><option></option></select></div>
+<div class="fg"><label>Status</label><select id="f_status"><option>Approved</option><option>Declined</option></select></div>
+<div class="fg"><label>Copy Type</label><select id="f_copy"><option></option><option>CUSTOMER COPY</option><option>MERCHANT COPY</option></select></div>
 </div>
 <button class="btn" onclick="gen()">Generate Receipt</button>
 <div class="btn-row">
@@ -100,13 +97,13 @@ function gen(){
 var h='';
 h+='<div class="rc">'+g('f_date')+' '+g('f_time')+'</div>';
 h+='<div class="blank"></div>';
-h+='<div class="rc" style="font-weight:bold">'+g('f_store')+'</div>';
+h+='<div class="rc">'+g('f_store')+'</div>';
 h+='<div class="rc">'+g('f_addr1')+'</div>';
 h+='<div class="rc">'+g('f_addr2')+'</div>';
 h+='<div class="rc">'+g('f_town')+'</div>';
 if(g('f_phone'))h+='<div class="rc">'+g('f_phone')+'</div>';
 h+='<div class="blank"></div>';
-h+='<div class="rl" style="font-weight:bold">'+g('f_type')+'</div>';
+h+='<div class="rl">'+g('f_type')+'</div>';
 h+='<div class="blank"></div>';
 h+='<div class="rl">Terminal '+g('f_terminal')+'</div>';
 h+='<div class="rl">Clerk ID '+g('f_clerk')+'</div>';
@@ -125,9 +122,7 @@ h+='<div class="rl">'+g('f_ctype')+'</div>';
 h+='<div class="blank"></div>';
 h+='<div class="rl">Auth Code '+g('f_auth')+'</div>';
 h+='<div class="blank"></div>';
-var curr=g('f_currency');
-var sym=curr=='EUR'?'\u20AC':curr=='GBP'?'\u00A3':'$';
-h+='<div class="amt-row"><span>Total Amount</span><span>'+sym+g('f_amount')+'</span></div>';
+h+='<div class="amt-row"><span>Total Amount</span><span>'+g('f_amount')+'</span></div>';
 h+='<div class="blank"></div>';
 h+='<div class="approved">'+g('f_status')+'</div>';
 var copy=g('f_copy');
