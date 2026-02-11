@@ -1,90 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Receipt Generator</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #1a1a2e; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px; }
-    .container { max-width: 500px; width: 100%; }
-    h1 { text-align: center; margin-bottom: 30px; font-size: 28px; color: #e94560; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; color: #ccc; }
-    input { width: 100%; padding: 10px 14px; border: 1px solid #333; border-radius: 6px; background: #16213e; color: #fff; font-size: 16px; }
-    input:focus { outline: none; border-color: #e94560; }
-    button { width: 100%; padding: 12px; background: #e94560; color: #fff; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-    button:hover { background: #c81e45; }
-    .receipt-wrapper { text-align: center; margin-top: 30px; }
-    canvas { border: 1px solid #333; border-radius: 4px; max-width: 100%; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Terminal Receipt Generator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#1a1a2e;color:#fff;min-height:100vh;display:flex;justify-content:center;padding:30px 15px}
+.wrap{display:flex;gap:40px;max-width:1000px;width:100%;align-items:flex-start;flex-wrap:wrap}
+.form-panel{flex:1;min-width:300px}
+.form-panel h1{color:#e94560;margin-bottom:20px;font-size:24px}
+.fg{margin-bottom:12px}
+.fg label{display:block;margin-bottom:4px;color:#aaa;font-size:13px}
+.fg input{width:100%;padding:8px 10px;border:1px solid #333;border-radius:4px;background:#16213e;color:#fff;font-size:14px}
+.fg input:focus{outline:none;border-color:#e94560}
+.btn{width:100%;padding:10px;background:#e94560;color:#fff;border:none;border-radius:4px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:8px}
+.btn:hover{background:#c81e45}
+.receipt-panel{flex:1;min-width:320px;text-align:center}
+#receiptArea canvas{max-width:100%}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Receipt Generator</h1>
-    <div class="form-group">
-      <label for="date">Date</label>
-      <input type="text" id="date" value="04/02/2026">
-    </div>
-    <div class="form-group">
-      <label for="time">Time</label>
-      <input type="text" id="time" value="10:11:38">
-    </div>
-    <div class="form-group">
-      <label for="amount">Amount (&#8364;)</label>
-      <input type="text" id="amount" value="45.00">
-    </div>
-    <div class="form-group">
-      <label for="terminal">Terminal ID</label>
-      <input type="text" id="terminal" value="195474001">
-    </div>
-    <button onclick="generateReceipt()">Generate</button>
-    <div class="receipt-wrapper" id="receiptArea"></div>
-  </div>
-  <script>
-    function generateReceipt() {
-      var w = 400, h = 850;
-      var canvas = document.createElement('canvas');
-      canvas.width = w;
-      canvas.height = h;
-      var ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = '#000000';
-      ctx.textAlign = 'center';
-      ctx.font = '16px Arial';
-      ctx.fillText('Southern Cross', 200, 40);
-      ctx.fillText('Southern Cross Central', 200, 60);
-      ctx.fillText('Wicklow', 200, 100);
-      var d = document.getElementById('date').value;
-      var t = document.getElementById('time').value;
-      var a = document.getElementById('amount').value;
-      var term = document.getElementById('terminal').value;
-      ctx.textAlign = 'left';
-      var y = 170;
-      ctx.fillText('DATE: ' + d, 20, y);
-      ctx.fillText('TIME: ' + t, 20, y + 25);
-      ctx.fillText('TERMINAL: ' + term, 20, y + 50);
-      y = 350;
-      ctx.beginPath();
-      ctx.moveTo(20, y);
-      ctx.lineTo(380, y);
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = '#000';
-      ctx.stroke();
-      ctx.fillText('TOTAL AMOUNT', 20, y + 20);
-      ctx.textAlign = 'right';
-      ctx.fillText('\u20AC' + a, 380, y + 20);
-      ctx.beginPath();
-      ctx.moveTo(20, y + 55);
-      ctx.lineTo(380, y + 55);
-      ctx.stroke();
-      ctx.textAlign = 'center';
-      ctx.fillText('APPROVED', 200, y + 100);
-      var area = document.getElementById('receiptArea');
-      area.innerHTML = '';
-      area.appendChild(canvas);
-    }
-  </script>
+<div class="wrap">
+<div class="form-panel">
+<h1>Payment Terminal Receipt</h1>
+<div class="fg"><label>Date (DDMMYYYY)</label><input id="f_date" value="04022026"></div>
+<div class="fg"><label>Time (HHMMSS)</label><input id="f_time" value="101138"></div>
+<div class="fg"><label>Store Name</label><input id="f_store" value="Southern Cross"></div>
+<div class="fg"><label>Address Line 1</label><input id="f_addr1" value="First Floor, Phase 2"></div>
+<div class="fg"><label>Address Line 2</label><input id="f_addr2" value="Southern Cross Central"></div>
+<div class="fg"><label>Town</label><input id="f_town" value="Wicklow"></div>
+<div class="fg"><label>Phone</label><input id="f_phone" value="01 255 1558"></div>
+<div class="fg"><label>Transaction Type</label><input id="f_type" value="Sale"></div>
+<div class="fg"><label>Terminal</label><input id="f_terminal" value="195470001"></div>
+<div class="fg"><label>Clerk ID</label><input id="f_clerk" value="1"></div>
+<div class="fg"><label>MID</label><input id="f_mid" value="19988"></div>
+<div class="fg"><label>TID</label><input id="f_tid" value="3985"></div>
+<div class="fg"><label>Order ID</label><input id="f_order" value="BC6709A97469"></div>
+<div class="fg"><label>Unique Ref</label><input id="f_uref" value="LF8MV1YJR7"></div>
+<div class="fg"><label>Entry Mode</label><input id="f_entry" value="CONTACTLESS"></div>
+<div class="fg"><label>ICC AID</label><input id="f_aid" value="A0000000041010"></div>
+<div class="fg"><label>Card Number (last 10)</label><input id="f_card" value="5332709572"></div>
+<div class="fg"><label>Card Type</label><input id="f_ctype" value="DEBIT MASTERCARD"></div>
+<div class="fg"><label>Auth Code</label><input id="f_auth" value="AXGUHU"></div>
+<div class="fg"><label>Total Amount</label><input id="f_amount" value="45.00"></div>
+<button class="btn" onclick="gen()">Generate Receipt</button>
+</div>
+<div class="receipt-panel"><div id="receiptArea"></div></div>
+</div>
+<script>
+function gen(){
+var c=document.createElement('canvas');
+c.width=400;c.height=720;
+var x=c.getContext('2d');
+x.fillStyle='#fff';x.fillRect(0,0,400,720);
+x.fillStyle='#000';x.textAlign='center';
+x.font='13px Courier New,monospace';
+var g=function(id){return document.getElementById(id).value;};
+var y=30;
+x.fillText(g('f_date')+'  '+g('f_time'),200,y);y+=25;
+x.fillText(g('f_store'),200,y);y+=18;
+x.fillText(g('f_addr1'),200,y);y+=18;
+x.fillText(g('f_addr2'),200,y);y+=18;
+x.fillText(g('f_town'),200,y);y+=18;
+x.fillText(g('f_phone'),200,y);y+=25;
+x.textAlign='left';
+x.fillText(g('f_type'),20,y);y+=20;
+x.fillText('Terminal       '+g('f_terminal'),20,y);y+=18;
+x.fillText('Clerk ID       '+g('f_clerk'),20,y);y+=18;
+x.fillText('MID            '+g('f_mid'),20,y);y+=18;
+x.fillText('TID            '+g('f_tid'),20,y);y+=18;
+x.fillText('Order ID       '+g('f_order'),20,y);y+=18;
+x.fillText('Unique Ref     '+g('f_uref'),20,y);y+=25;
+x.fillText('Entry Mode     '+g('f_entry'),20,y);y+=18;
+x.fillText('ICC AID        '+g('f_aid'),20,y);y+=18;
+x.fillText('Card Number    '+g('f_card'),20,y);y+=18;
+x.fillText('Card Type      '+g('f_ctype'),20,y);y+=18;
+x.fillText('Auth Code      '+g('f_auth'),20,y);y+=30;
+x.beginPath();x.moveTo(20,y);x.lineTo(380,y);x.lineWidth=1;x.strokeStyle='#000';x.stroke();y+=20;
+x.font='bold 14px Courier New,monospace';
+x.fillText('Total Amount',20,y);
+x.textAlign='right';x.fillText(g('f_amount'),380,y);y+=20;
+x.textAlign='left';x.beginPath();x.moveTo(20,y);x.lineTo(380,y);x.stroke();y+=30;
+x.textAlign='center';x.font='bold 16px Courier New,monospace';
+x.fillText('Approved',200,y);y+=30;
+x.font='13px Courier New,monospace';
+x.fillText('CUSTOMER COPY',200,y);
+var a=document.getElementById('receiptArea');
+a.innerHTML='';a.appendChild(c);
+}
+</script>
 </body>
 </html>
