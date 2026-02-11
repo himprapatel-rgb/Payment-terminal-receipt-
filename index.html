@@ -24,17 +24,17 @@ body{font-family:Arial,sans-serif;background:#0f0f1a;color:#fff;min-height:100vh
 .btn-secondary{background:#333;color:#ccc}
 .btn-secondary:hover{background:#444}
 .receipt-panel{flex:1;min-width:340px;display:flex;justify-content:center;position:sticky;top:30px}
-.receipt-outer{background:#f5f0e8;padding:24px 18px 35px;width:320px;box-shadow:0 4px 20px rgba(0,0,0,0.6);font-family:'Courier New',Courier,monospace;color:#333;font-size:13px;line-height:1.6;position:relative}
+.receipt-outer{background:#f5f0e8;padding:20px 16px 32px;width:310px;box-shadow:0 4px 20px rgba(0,0,0,0.6);font-family:'Courier New',Courier,monospace;color:#333;font-size:12px;line-height:1.5;position:relative}
 .receipt-outer::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.015) 1px,rgba(0,0,0,0.015) 2px);pointer-events:none}
-.receipt-outer::after{content:'';position:absolute;bottom:-10px;left:0;right:0;height:10px;background:linear-gradient(135deg,#f5f0e8 33.33%,transparent 33.33%),linear-gradient(-135deg,#f5f0e8 33.33%,transparent 33.33%);background-size:14px 10px}
-.rc{text-align:center;margin-bottom:1px}
-.rl{text-align:left;white-space:pre}
-.sep{text-align:center;color:#555;margin:5px 0;letter-spacing:1px;font-size:11px;overflow:hidden}
-.amt-row{display:flex;justify-content:space-between;font-weight:bold;font-size:15px;margin:6px 0}
-.approved{text-align:center;font-weight:bold;font-size:18px;margin:10px 0 4px;letter-spacing:2px}
-.cc{text-align:center;font-size:12px;margin-top:6px}
-.blank{height:8px}
-.sig-line{border-bottom:1px solid #999;margin:20px 10px 4px;height:1px}
+.receipt-outer::after{content:'';position:absolute;bottom:-10px;left:0;right:0;height:10px;background:linear-gradient(135deg,#f5f0e8 33.33%,transparent 33.33%),linear-gradient(-135deg,#f5f0e8 33.33%,transparent 33.33%);background-size:12px 10px}
+.rc{text-align:center;margin-bottom:0}
+.rl{text-align:left;white-space:pre;font-size:12px}
+.sep{text-align:center;color:#555;margin:4px 0;letter-spacing:0;font-size:12px;overflow:hidden}
+.amt-row{display:flex;justify-content:space-between;font-weight:bold;font-size:14px;margin:4px 0}
+.approved{text-align:center;font-weight:bold;font-size:16px;margin:8px 0 4px;letter-spacing:1px}
+.cc{text-align:center;font-size:11px;margin-top:4px}
+.blank{height:6px}
+.sig-line{border-bottom:1px solid #999;margin:16px 8px 4px;height:1px}
 .sig-label{text-align:center;font-size:10px;color:#777}
 #receiptBox{display:none}
 @media print{body{background:#fff}.form-panel,.btn-row{display:none}.receipt-panel{position:static}.receipt-outer{box-shadow:none;width:280px}}
@@ -101,34 +101,34 @@ body{font-family:Arial,sans-serif;background:#0f0f1a;color:#fff;min-height:100vh
 function g(id){return document.getElementById(id).value;}
 function gen(){
 var h='';
-h+='<div class="rc" style="font-size:11px">'+g('f_date')+'  '+g('f_time')+'</div>';
+h+='<div class="rc">'+g('f_date')+' '+g('f_time')+'</div>';
 h+='<div class="blank"></div>';
-h+='<div class="rc" style="font-weight:bold;font-size:15px">'+g('f_store')+'</div>';
+h+='<div class="rc" style="font-weight:bold">'+g('f_store')+'</div>';
 h+='<div class="rc">'+g('f_addr1')+'</div>';
 h+='<div class="rc">'+g('f_addr2')+'</div>';
 h+='<div class="rc">'+g('f_town')+'</div>';
 if(g('f_phone'))h+='<div class="rc">Tel: '+g('f_phone')+'</div>';
-h+='<div class="sep">- - - - - - - - - - - - - - - -</div>';
-h+='<div class="rl" style="font-weight:bold;font-size:14px">'+g('f_type')+'</div>';
+h+='<div class="sep">--------------------------------</div>';
+h+='<div class="rl" style="font-weight:bold">'+g('f_type')+'</div>';
 h+='<div class="blank"></div>';
-h+='<div class="rl">Terminal    '+g('f_terminal')+'</div>';
-h+='<div class="rl">Clerk ID   '+g('f_clerk')+'</div>';
-h+='<div class="rl">MID        '+g('f_mid')+'</div>';
-h+='<div class="rl">TID        '+g('f_tid')+'</div>';
-h+='<div class="rl">Order ID   '+g('f_order')+'</div>';
-h+='<div class="rl">Unique Ref '+g('f_uref')+'</div>';
-h+='<div class="sep">- - - - - - - - - - - - - - - -</div>';
-h+='<div class="rl">Entry Mode '+g('f_entry')+'</div>';
-h+='<div class="rl">ICC AID    '+g('f_aid')+'</div>';
+h+='<div class="rl">TERMINAL:   '+g('f_terminal')+'</div>';
+h+='<div class="rl">CLERK ID:   '+g('f_clerk')+'</div>';
+h+='<div class="rl">MID:        '+g('f_mid')+'</div>';
+h+='<div class="rl">TID:        '+g('f_tid')+'</div>';
+h+='<div class="rl">ORDER ID:   '+g('f_order')+'</div>';
+h+='<div class="rl">UNIQUE REF: '+g('f_uref')+'</div>';
+h+='<div class="sep">--------------------------------</div>';
+h+='<div class="rl">ENTRY MODE: '+g('f_entry')+'</div>';
+h+='<div class="rl">ICC AID:    '+g('f_aid')+'</div>';
 h+='<div class="blank"></div>';
 var last4=g('f_card');
 var masked='************'+last4;
-h+='<div class="rl">Card Number</div>';
-h+='<div class="rl">  '+masked+'</div>';
-h+='<div class="rl">Card Type</div>';
-h+='<div class="rl">  '+g('f_ctype')+'</div>';
+h+='<div class="rl">CARD NUMBER:</div>';
+h+='<div class="rl">'+masked+'</div>';
+h+='<div class="rl">CARD TYPE:</div>';
+h+='<div class="rl">'+g('f_ctype')+'</div>';
 h+='<div class="blank"></div>';
-h+='<div class="rl">Auth Code  '+g('f_auth')+'</div>';
+h+='<div class="rl">AUTH CODE:  '+g('f_auth')+'</div>';
 h+='<div class="sep">================================</div>';
 var curr=g('f_currency');
 var sym=curr=='EUR'?'\u20AC':curr=='GBP'?'\u00A3':'$';
@@ -137,9 +137,9 @@ h+='<div class="sep">================================</div>';
 h+='<div class="blank"></div>';
 var st=g('f_status');
 if(st=='APPROVED'){
-h+='<div class="approved">APPROVED</div>';
+h+='<div class="approved">** APPROVED **</div>';
 }else{
-h+='<div class="approved" style="color:#c00">'+st+'</div>';
+h+='<div class="approved" style="color:#c00">** '+st+' **</div>';
 }
 h+='<div class="blank"></div>';
 if(g('f_entry')=='CHIP & SIGN'||g('f_entry')=='SWIPE'){
@@ -147,10 +147,10 @@ h+='<div class="sig-line"></div>';
 h+='<div class="sig-label">CARDHOLDER SIGNATURE</div>';
 h+='<div class="blank"></div>';
 }
-h+='<div class="sep">- - - - - - - - - - - - - - - -</div>';
-h+='<div class="cc">** '+g('f_copy')+' **</div>';
+h+='<div class="sep">--------------------------------</div>';
+h+='<div class="cc">'+g('f_copy')+'</div>';
 h+='<div class="blank"></div>';
-h+='<div class="rc" style="font-size:10px;color:#888">PLEASE RETAIN FOR YOUR RECORDS</div>';
+h+='<div class="rc" style="font-size:10px;color:#666">PLEASE RETAIN FOR YOUR RECORDS</div>';
 document.getElementById('receiptContent').innerHTML=h;
 document.getElementById('receiptBox').style.display='block';
 }
