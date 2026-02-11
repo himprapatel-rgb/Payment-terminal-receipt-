@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receipt Generator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #1a1a2e; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px; }
+    .container { max-width: 500px; width: 100%; }
+    h1 { text-align: center; margin-bottom: 30px; font-size: 28px; color: #e94560; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; color: #ccc; }
+    input { width: 100%; padding: 10px 14px; border: 1px solid #333; border-radius: 6px; background: #16213e; color: #fff; font-size: 16px; }
+    input:focus { outline: none; border-color: #e94560; }
+    button { width: 100%; padding: 12px; background: #e94560; color: #fff; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #c81e45; }
+    .receipt-wrapper { text-align: center; margin-top: 30px; }
+    canvas { border: 1px solid #333; border-radius: 4px; max-width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Receipt Generator</h1>
+    <div class="form-group">
+      <label for="date">Date</label>
+      <input type="text" id="date" value="04/02/2026">
+    </div>
+    <div class="form-group">
+      <label for="time">Time</label>
+      <input type="text" id="time" value="10:11:38">
+    </div>
+    <div class="form-group">
+      <label for="amount">Amount (&#8364;)</label>
+      <input type="text" id="amount" value="45.00">
+    </div>
+    <div class="form-group">
+      <label for="terminal">Terminal ID</label>
+      <input type="text" id="terminal" value="195474001">
+    </div>
+    <button onclick="generateReceipt()">Generate</button>
+    <div class="receipt-wrapper" id="receiptArea"></div>
+  </div>
+  <script>
+    function generateReceipt() {
+      var w = 400, h = 850;
+      var canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = '#000000';
+      ctx.textAlign = 'center';
+      ctx.font = '16px Arial';
+      ctx.fillText('Southern Cross', 200, 40);
+      ctx.fillText('Southern Cross Central', 200, 60);
+      ctx.fillText('Wicklow', 200, 100);
+      var d = document.getElementById('date').value;
+      var t = document.getElementById('time').value;
+      var a = document.getElementById('amount').value;
+      var term = document.getElementById('terminal').value;
+      ctx.textAlign = 'left';
+      var y = 170;
+      ctx.fillText('DATE: ' + d, 20, y);
+      ctx.fillText('TIME: ' + t, 20, y + 25);
+      ctx.fillText('TERMINAL: ' + term, 20, y + 50);
+      y = 350;
+      ctx.beginPath();
+      ctx.moveTo(20, y);
+      ctx.lineTo(380, y);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#000';
+      ctx.stroke();
+      ctx.fillText('TOTAL AMOUNT', 20, y + 20);
+      ctx.textAlign = 'right';
+      ctx.fillText('\u20AC' + a, 380, y + 20);
+      ctx.beginPath();
+      ctx.moveTo(20, y + 55);
+      ctx.lineTo(380, y + 55);
+      ctx.stroke();
+      ctx.textAlign = 'center';
+      ctx.fillText('APPROVED', 200, y + 100);
+      var area = document.getElementById('receiptArea');
+      area.innerHTML = '';
+      area.appendChild(canvas);
+    }
+  </script>
+</body>
+</html>
