@@ -6,88 +6,153 @@
 <title>Payment Terminal Receipt Generator</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:#1a1a2e;color:#fff;min-height:100vh;display:flex;justify-content:center;padding:30px 15px}
-.wrap{display:flex;gap:40px;max-width:1000px;width:100%;align-items:flex-start;flex-wrap:wrap}
-.form-panel{flex:1;min-width:300px}
-.form-panel h1{color:#e94560;margin-bottom:20px;font-size:24px}
-.fg{margin-bottom:12px}
-.fg label{display:block;margin-bottom:4px;color:#aaa;font-size:13px}
-.fg input{width:100%;padding:8px 10px;border:1px solid #333;border-radius:4px;background:#16213e;color:#fff;font-size:14px}
-.fg input:focus{outline:none;border-color:#e94560}
-.btn{width:100%;padding:10px;background:#e94560;color:#fff;border:none;border-radius:4px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:8px}
+body{font-family:Arial,sans-serif;background:#0f0f1a;color:#fff;min-height:100vh;display:flex;justify-content:center;padding:30px 15px}
+.wrap{display:flex;gap:40px;max-width:1100px;width:100%;align-items:flex-start;flex-wrap:wrap}
+.form-panel{flex:1;min-width:300px;max-width:450px}
+.form-panel h1{color:#e94560;margin-bottom:8px;font-size:22px}
+.form-panel .sub{color:#888;font-size:13px;margin-bottom:18px}
+.fg{margin-bottom:10px}
+.fg label{display:block;margin-bottom:3px;color:#aaa;font-size:12px}
+.fg input,.fg select{width:100%;padding:7px 10px;border:1px solid #333;border-radius:4px;background:#16213e;color:#fff;font-size:13px}
+.fg input:focus,.fg select:focus{outline:none;border-color:#e94560}
+.row{display:flex;gap:10px}
+.row .fg{flex:1}
+.btn{width:100%;padding:10px;background:#e94560;color:#fff;border:none;border-radius:4px;font-size:15px;font-weight:bold;cursor:pointer;margin-top:8px}
 .btn:hover{background:#c81e45}
-.receipt-panel{flex:1;min-width:320px;text-align:center}
-#receiptArea canvas{max-width:100%}
+.btn-row{display:flex;gap:10px;margin-top:8px}
+.btn-row .btn{margin-top:0}
+.btn-secondary{background:#333;color:#ccc}
+.btn-secondary:hover{background:#444}
+.receipt-panel{flex:1;min-width:340px;display:flex;justify-content:center;position:sticky;top:30px}
+.receipt-outer{background:#f5f0e8;padding:24px 18px 35px;width:320px;box-shadow:0 4px 20px rgba(0,0,0,0.6);font-family:'Courier New',Courier,monospace;color:#333;font-size:13px;line-height:1.6;position:relative}
+.receipt-outer::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.015) 1px,rgba(0,0,0,0.015) 2px);pointer-events:none}
+.receipt-outer::after{content:'';position:absolute;bottom:-10px;left:0;right:0;height:10px;background:linear-gradient(135deg,#f5f0e8 33.33%,transparent 33.33%),linear-gradient(-135deg,#f5f0e8 33.33%,transparent 33.33%);background-size:14px 10px}
+.rc{text-align:center;margin-bottom:1px}
+.rl{text-align:left;white-space:pre}
+.sep{text-align:center;color:#555;margin:5px 0;letter-spacing:1px;font-size:11px;overflow:hidden}
+.amt-row{display:flex;justify-content:space-between;font-weight:bold;font-size:15px;margin:6px 0}
+.approved{text-align:center;font-weight:bold;font-size:18px;margin:10px 0 4px;letter-spacing:2px}
+.cc{text-align:center;font-size:12px;margin-top:6px}
+.blank{height:8px}
+.sig-line{border-bottom:1px solid #999;margin:20px 10px 4px;height:1px}
+.sig-label{text-align:center;font-size:10px;color:#777}
+#receiptBox{display:none}
+@media print{body{background:#fff}.form-panel,.btn-row{display:none}.receipt-panel{position:static}.receipt-outer{box-shadow:none;width:280px}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="form-panel">
 <h1>Payment Terminal Receipt</h1>
-<div class="fg"><label>Date (DDMMYYYY)</label><input id="f_date" value="04022026"></div>
-<div class="fg"><label>Time (HHMMSS)</label><input id="f_time" value="101138"></div>
+<p class="sub">Generate realistic payment terminal receipts</p>
+<div class="row">
+<div class="fg"><label>Date (DD/MM/YYYY)</label><input id="f_date" value="04/02/2026"></div>
+<div class="fg"><label>Time (HH:MM:SS)</label><input id="f_time" value="10:11:38"></div>
+</div>
 <div class="fg"><label>Store Name</label><input id="f_store" value="Southern Cross"></div>
 <div class="fg"><label>Address Line 1</label><input id="f_addr1" value="First Floor, Phase 2"></div>
 <div class="fg"><label>Address Line 2</label><input id="f_addr2" value="Southern Cross Central"></div>
-<div class="fg"><label>Town</label><input id="f_town" value="Wicklow"></div>
+<div class="row">
+<div class="fg"><label>Town/City</label><input id="f_town" value="Wicklow"></div>
 <div class="fg"><label>Phone</label><input id="f_phone" value="01 255 1558"></div>
-<div class="fg"><label>Transaction Type</label><input id="f_type" value="Sale"></div>
-<div class="fg"><label>Terminal</label><input id="f_terminal" value="195470001"></div>
-<div class="fg"><label>Clerk ID</label><input id="f_clerk" value="1"></div>
-<div class="fg"><label>MID</label><input id="f_mid" value="19988"></div>
-<div class="fg"><label>TID</label><input id="f_tid" value="3985"></div>
+</div>
+<div class="row">
+<div class="fg"><label>Transaction Type</label><select id="f_type"><option>SALE</option><option>REFUND</option><option>VOID</option><option>PRE-AUTH</option></select></div>
+<div class="fg"><label>Terminal ID</label><input id="f_terminal" value="19547001"></div>
+</div>
+<div class="row">
+<div class="fg"><label>Clerk ID</label><input id="f_clerk" value="001"></div>
+<div class="fg"><label>MID</label><input id="f_mid" value="199880"></div>
+<div class="fg"><label>TID</label><input id="f_tid" value="39850"></div>
+</div>
+<div class="row">
 <div class="fg"><label>Order ID</label><input id="f_order" value="BC6709A97469"></div>
 <div class="fg"><label>Unique Ref</label><input id="f_uref" value="LF8MV1YJR7"></div>
-<div class="fg"><label>Entry Mode</label><input id="f_entry" value="CONTACTLESS"></div>
-<div class="fg"><label>ICC AID</label><input id="f_aid" value="A0000000041010"></div>
-<div class="fg"><label>Card Number (last 10)</label><input id="f_card" value="5332709572"></div>
-<div class="fg"><label>Card Type</label><input id="f_ctype" value="DEBIT MASTERCARD"></div>
-<div class="fg"><label>Auth Code</label><input id="f_auth" value="AXGUHU"></div>
-<div class="fg"><label>Total Amount</label><input id="f_amount" value="45.00"></div>
-<button class="btn" onclick="gen()">Generate Receipt</button>
 </div>
-<div class="receipt-panel"><div id="receiptArea"></div></div>
+<div class="row">
+<div class="fg"><label>Entry Mode</label><select id="f_entry"><option>CONTACTLESS</option><option>CHIP & PIN</option><option>CHIP & SIGN</option><option>SWIPE</option><option>MANUAL</option></select></div>
+<div class="fg"><label>ICC AID</label><input id="f_aid" value="A0000000041010"></div>
+</div>
+<div class="fg"><label>Card Number (last 4 digits)</label><input id="f_card" value="9572" maxlength="4"></div>
+<div class="row">
+<div class="fg"><label>Card Type</label><select id="f_ctype"><option>DEBIT MASTERCARD</option><option>VISA DEBIT</option><option>VISA CREDIT</option><option>MASTERCARD CREDIT</option><option>AMEX</option><option>UNION PAY</option></select></div>
+<div class="fg"><label>Auth Code</label><input id="f_auth" value="AXGUHU"></div>
+</div>
+<div class="row">
+<div class="fg"><label>Currency</label><select id="f_currency"><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="USD">USD</option></select></div>
+<div class="fg"><label>Total Amount</label><input id="f_amount" value="45.00"></div>
+</div>
+<div class="row">
+<div class="fg"><label>Status</label><select id="f_status"><option>APPROVED</option><option>DECLINED</option><option>CANCELLED</option></select></div>
+<div class="fg"><label>Copy Type</label><select id="f_copy"><option>CUSTOMER COPY</option><option>MERCHANT COPY</option></select></div>
+</div>
+<button class="btn" onclick="gen()">Generate Receipt</button>
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="window.print()">Print</button>
+</div>
+</div>
+<div class="receipt-panel">
+<div class="receipt-outer" id="receiptBox">
+<div id="receiptContent"></div>
+</div>
+</div>
 </div>
 <script>
+function g(id){return document.getElementById(id).value;}
 function gen(){
-var c=document.createElement('canvas');
-c.width=400;c.height=720;
-var x=c.getContext('2d');
-x.fillStyle='#fff';x.fillRect(0,0,400,720);
-x.fillStyle='#000';x.textAlign='center';
-x.font='13px Courier New,monospace';
-var g=function(id){return document.getElementById(id).value;};
-var y=30;
-x.fillText(g('f_date')+'  '+g('f_time'),200,y);y+=25;
-x.fillText(g('f_store'),200,y);y+=18;
-x.fillText(g('f_addr1'),200,y);y+=18;
-x.fillText(g('f_addr2'),200,y);y+=18;
-x.fillText(g('f_town'),200,y);y+=18;
-x.fillText(g('f_phone'),200,y);y+=25;
-x.textAlign='left';
-x.fillText(g('f_type'),20,y);y+=20;
-x.fillText('Terminal       '+g('f_terminal'),20,y);y+=18;
-x.fillText('Clerk ID       '+g('f_clerk'),20,y);y+=18;
-x.fillText('MID            '+g('f_mid'),20,y);y+=18;
-x.fillText('TID            '+g('f_tid'),20,y);y+=18;
-x.fillText('Order ID       '+g('f_order'),20,y);y+=18;
-x.fillText('Unique Ref     '+g('f_uref'),20,y);y+=25;
-x.fillText('Entry Mode     '+g('f_entry'),20,y);y+=18;
-x.fillText('ICC AID        '+g('f_aid'),20,y);y+=18;
-x.fillText('Card Number    '+g('f_card'),20,y);y+=18;
-x.fillText('Card Type      '+g('f_ctype'),20,y);y+=18;
-x.fillText('Auth Code      '+g('f_auth'),20,y);y+=30;
-x.beginPath();x.moveTo(20,y);x.lineTo(380,y);x.lineWidth=1;x.strokeStyle='#000';x.stroke();y+=20;
-x.font='bold 14px Courier New,monospace';
-x.fillText('Total Amount',20,y);
-x.textAlign='right';x.fillText(g('f_amount'),380,y);y+=20;
-x.textAlign='left';x.beginPath();x.moveTo(20,y);x.lineTo(380,y);x.stroke();y+=30;
-x.textAlign='center';x.font='bold 16px Courier New,monospace';
-x.fillText('Approved',200,y);y+=30;
-x.font='13px Courier New,monospace';
-x.fillText('CUSTOMER COPY',200,y);
-var a=document.getElementById('receiptArea');
-a.innerHTML='';a.appendChild(c);
+var h='';
+h+='<div class="rc" style="font-size:11px">'+g('f_date')+'  '+g('f_time')+'</div>';
+h+='<div class="blank"></div>';
+h+='<div class="rc" style="font-weight:bold;font-size:15px">'+g('f_store')+'</div>';
+h+='<div class="rc">'+g('f_addr1')+'</div>';
+h+='<div class="rc">'+g('f_addr2')+'</div>';
+h+='<div class="rc">'+g('f_town')+'</div>';
+if(g('f_phone'))h+='<div class="rc">Tel: '+g('f_phone')+'</div>';
+h+='<div class="sep">- - - - - - - - - - - - - - - -</div>';
+h+='<div class="rl" style="font-weight:bold;font-size:14px">'+g('f_type')+'</div>';
+h+='<div class="blank"></div>';
+h+='<div class="rl">Terminal    '+g('f_terminal')+'</div>';
+h+='<div class="rl">Clerk ID   '+g('f_clerk')+'</div>';
+h+='<div class="rl">MID        '+g('f_mid')+'</div>';
+h+='<div class="rl">TID        '+g('f_tid')+'</div>';
+h+='<div class="rl">Order ID   '+g('f_order')+'</div>';
+h+='<div class="rl">Unique Ref '+g('f_uref')+'</div>';
+h+='<div class="sep">- - - - - - - - - - - - - - - -</div>';
+h+='<div class="rl">Entry Mode '+g('f_entry')+'</div>';
+h+='<div class="rl">ICC AID    '+g('f_aid')+'</div>';
+h+='<div class="blank"></div>';
+var last4=g('f_card');
+var masked='************'+last4;
+h+='<div class="rl">Card Number</div>';
+h+='<div class="rl">  '+masked+'</div>';
+h+='<div class="rl">Card Type</div>';
+h+='<div class="rl">  '+g('f_ctype')+'</div>';
+h+='<div class="blank"></div>';
+h+='<div class="rl">Auth Code  '+g('f_auth')+'</div>';
+h+='<div class="sep">================================</div>';
+var curr=g('f_currency');
+var sym=curr=='EUR'?'\u20AC':curr=='GBP'?'\u00A3':'$';
+h+='<div class="amt-row"><span>TOTAL</span><span>'+sym+g('f_amount')+'</span></div>';
+h+='<div class="sep">================================</div>';
+h+='<div class="blank"></div>';
+var st=g('f_status');
+if(st=='APPROVED'){
+h+='<div class="approved">APPROVED</div>';
+}else{
+h+='<div class="approved" style="color:#c00">'+st+'</div>';
+}
+h+='<div class="blank"></div>';
+if(g('f_entry')=='CHIP & SIGN'||g('f_entry')=='SWIPE'){
+h+='<div class="sig-line"></div>';
+h+='<div class="sig-label">CARDHOLDER SIGNATURE</div>';
+h+='<div class="blank"></div>';
+}
+h+='<div class="sep">- - - - - - - - - - - - - - - -</div>';
+h+='<div class="cc">** '+g('f_copy')+' **</div>';
+h+='<div class="blank"></div>';
+h+='<div class="rc" style="font-size:10px;color:#888">PLEASE RETAIN FOR YOUR RECORDS</div>';
+document.getElementById('receiptContent').innerHTML=h;
+document.getElementById('receiptBox').style.display='block';
 }
 </script>
 </body>
